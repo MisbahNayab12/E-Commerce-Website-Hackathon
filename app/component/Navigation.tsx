@@ -7,8 +7,7 @@ import Group from '../../public/Group.png'
 import Handbag from '../../public/Handbag.png'
 import User from '../../public/User.png'
 import { useRouter } from 'next/navigation'
-import { AppDispatch, useAppSelector } from '@/redux/features/store'
-import { useDispatch } from 'react-redux'
+import {useAppSelector } from '@/redux/features/store'
 import { StaticImageData } from 'next/image'
 import Menu from '../../public/menu.png'
 import Close from '../../public/close.png'
@@ -29,7 +28,7 @@ export default function Navigation() {
     const cartArray: CartItem[] = useAppSelector((state) => state.cartReducer)
     useEffect(()=> {
         setCartItems(cartArray.length)
-    })
+    , [cartArray.length]})
     return (
         <div>
             <div className='overflow-hidden flex justify-between items-center lg:mx-14 xl:mx-[200px] 2xl:mx-[300px] font-sans flex-col lg:flex-row gap-5 mt-[30px]'>
