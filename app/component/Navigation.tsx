@@ -28,11 +28,11 @@ export default function Navigation() {
     const cartArray: CartItem[] = useAppSelector((state) => state.cartReducer)
     useEffect(()=> {
         setCartItems(cartArray.length)
-    , [cartArray.length]})
+    }, [cartArray.length])
     return (
         <div>
             <div className='overflow-hidden flex justify-between items-center lg:mx-14 xl:mx-[200px] 2xl:mx-[300px] font-sans flex-col lg:flex-row gap-5 mt-[30px]'>
-                <h1 className='text-center font-bold text-primary text-[24px] leading-8  '>Food<span className='text-white'>tuck</span></h1>
+                <h1 className='text-center font-bold text-primary text-[24px] leading-8'>Food<span className='text-white'>tuck</span></h1>
                 <div id="anchors" className='hidden md:flex'>
                     <ul className=' text-white flex gap-8'>
                         <li><Link href="/" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' >Home</Link></li>
