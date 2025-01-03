@@ -23,9 +23,8 @@ interface CartItem {
 }
 
 export default function Navigation() {
-    const [cartItems, setCartItems] = useState(0)
+    const [, setCartItems] = useState(0)
     const Router = useRouter()
-    const dispatch = useDispatch<AppDispatch>();
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const cartArray: CartItem[] = useAppSelector((state) => state.cartReducer)
     useEffect(()=> {

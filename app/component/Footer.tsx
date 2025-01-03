@@ -14,15 +14,15 @@ export default function Footer() {
             <div>
                 <div className='flex justify-between items-center flex-col md:flex-row px-10 lg:px-[135px] py-8 lg:[py-50]'>
                     <div>
-                        <h1 className='text-white    text-2xl md:text-4xl lg:ml-[50px]    font-semibold font-sans'><span className='text-primary'>St</span>ill You Need Our Support?</h1>
+                        <h1 className='text-white text-2xl md:text-4xl lg:ml-[50px] font-semibold font-sans'><span className='text-primary'>St</span>ill You Need Our Support?</h1>
                         <div className='md:w-3/4 w-full'>
-                            <p className='text-white font-sans   text-sm md:text-base font-light lg:ml-[50px] mt-4'>Don't wait make a smart & logical quote here. Its pretty easy.</p>
+                            <p className='text-white font-sans   text-sm md:text-base font-light lg:ml-[50px] mt-4'>Dont wait make a smart and logical quote here. Its pretty easy.</p>
                         </div>
                     </div>
 
                     <div className="flex mt-6 md:mt-0">
-                        <input type="text" placeholder='Enter Your Email' className="bg-primary text-white     py-2 px-4 md:py-3 md:px-6 rounded-l-md focus:outline-none      placeholder-white" />
-                        <button className='text-primary bg-white    py-2 px-4 md:py-3 md:px-6 rounded-r-md     '>Subscribe Now</button>
+                        <input type="text" placeholder='Enter Your Email' className="bg-primary text-white py-2 px-4 md:py-3 md:px-6 rounded-l-md focus:outline-none      placeholder-white" />
+                        <button className='text-primary bg-white py-2 px-4 md:py-3 md:px-6 rounded-r-md'>Subscribe Now</button>
                     </div>
                 </div>
                 <hr className=' border-primary mx-10 md:mx-[135px]'></hr>
