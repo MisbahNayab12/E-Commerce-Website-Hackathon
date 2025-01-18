@@ -15,7 +15,7 @@ import Food4 from '../public/food4.png'
 export default function page() {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div >
         <div className='flex justify-between items-center flex-col md:flex-row mt-10 text-center lg:text-left'>
           <div>
@@ -70,11 +70,43 @@ export default function page() {
       <div className='mt-24 md:mt-40 xl:ml-[48px]'>
         <h2 className='font-greatVibes text-primary font-normal leading-10 text-[30px] 2xl:text-[32px] text-center'>Food Category </h2>
         <h1 className='text-white font-bold text-[48px] leading-[56px] text-center'><span className='text-primary'>Ch</span>oose Food Item</h1>
-        <div className='flex justify-between items-center md:mt-14 mb-20 flex-col gap-2 md:mx-5 lg:flex-row lg:justify-between lg:flex-wrap xl:flex-row xl:mr-[200px] xl:ml-[150px]'>
-          <Image src={Food1} alt="foodimage" className='w-[306px] h-[329px]' />
-          <Image src={Food2} alt="foodimage" className='w-[306px] h-[329px]' />
-          <Image src={Food3} alt="foodimage" className='w-[306px] h-[329px]' />
-          <Image src={Food4} alt="foodimage" className='w-[306px] h-[329px]' />
+        <div className=" grid place-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 xl:mx-[150px]">
+          <div className="relative">
+            <Image
+              src={Food1}
+              alt="foodimage"
+              width={306}
+              height={329}
+              className="rounded-lg"
+            />
+            <div className="absolute top-4 left-4 bg-yellow-500 text-black px-3 py-1 rounded-full text-sm font-bold">
+              Save 20%
+            </div>
+            <p className="absolute bottom-4 left-4 text-white font-bold">
+              Fast Food Dish
+            </p>
+          </div>
+          <Image
+            src={Food2}
+            alt="foodimage"
+            width={306}
+            height={329}
+            className="rounded-lg"
+          />
+          <Image
+            src={Food3}
+            alt="foodimage"
+            width={306}
+            height={329}
+            className="rounded-lg"
+          />
+          <Image
+            src={Food4}
+            alt="foodimage"
+            width={306}
+            height={329}
+            className="rounded-lg"
+          />
         </div>
       </div>
 

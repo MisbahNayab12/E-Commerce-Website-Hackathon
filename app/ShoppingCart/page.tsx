@@ -3,47 +3,53 @@
 import React from 'react'
 import Image from 'next/image'
 import CaretRight from '../../public/CaretRight.png'
-import { StaticImageData } from 'next/image'
 import Delete from '../../public/X.png'
 import {useAppSelector } from '@/redux/features/store'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/features/store';
+import { updateCart } from '@/redux/features/cart-slice';
 
 interface CartItem {
+  _id: string;
   name: string;
-  id: number;
-  imagePath: StaticImageData;
+  category: string;
   price: number;
-  description: string
+  originalPrice: number;
+  tags: string;
+  image: string,
+  description: string,
+  available: boolean,
   quantity: number
 }
 
-
 export default function Page() {
+  const dispatch = useDispatch<AppDispatch>();
   const [CartItems, setCartItems] = useState<CartItem[]>([])
 
   const incrementCartItem = (index: number) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.map((item, i) =>
-        i === index ? { ...item, quantity: item.quantity + 1 } : item
-      )
+    const updatedCart = CartItems.map((item, i) =>
+      i === index ? { ...item, quantity: item.quantity + 1 } : item
     );
+    setCartItems(updatedCart);
+    dispatch(updateCart(updatedCart));
   };
-
+  
   const decrementCartItem = (index: number) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.map((item, i) =>
-        i === index && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
+    const updatedCart = CartItems.map((item, i) =>
+      i === index && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
     );
-  };
+    setCartItems(updatedCart);
+    dispatch(updateCart(updatedCart));
+  }
 
   const removeCartItem = (index: number) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.filter((_, i) => i !== index)
-    );
+    const updatedCart = CartItems.filter((_, i) => i !== index);
+    setCartItems(updatedCart); // this function update local state for this component
+    dispatch(updateCart(updatedCart)); // this function update Redux state to reflect globally
   };
 
   const cartArray: CartItem[] = useAppSelector((state) => state.cartReducer)
@@ -80,10 +86,10 @@ export default function Page() {
 
           {
             CartItems.map((item, index) => (
-              <div key={item.id}>
+              <div key={item._id}>
                 <div className='grid grid-cols-5 place-items-center mt-10'>
                   <div className='flex justify-start gap-3 w-[200px]'>
-                    <Image src={item.imagePath} alt={item.name} className='w-[100px]' />
+                    <Image src={item.image} alt={item.name} className='w-[100px]' width={200} height={200} />
                     <h3 className='font-bold'>{item.name}</h3>
                   </div>
                   <h3>${item.price}</h3>

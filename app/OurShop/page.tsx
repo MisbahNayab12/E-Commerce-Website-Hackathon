@@ -3,109 +3,76 @@
 import React, { useEffect } from 'react'
 import Image from 'next/image'
 import CaretRight from '../../public/CaretRight.png'
-import Shopimage1 from '../../public/Shopimage1.png'
-import Shopimage2 from '../../public/Shopimage2.png'
-import Shopimage3 from '../../public/Shopimage3.png'
-import { StaticImageData } from 'next/image'
-import Shopimage4 from '../../public/Shopimage4.png'
-import Shopimage5 from '../../public/Shopimage5.png'
-import Shopimage6 from '../../public/Shopimage6.png'
-import Shopimage7 from '../../public/Shopimage7.png'
-import Shopimage8 from '../../public/Shopimage8.png'
-import Shopimage9 from '../../public/Shopimage9.png'
 import { useDispatch } from 'react-redux'
 import { AppDispatch, useAppSelector } from '@/redux/features/store'
 import { updateCart } from '@/redux/features/cart-slice'
+import { client } from "@/sanity/lib/client"
+import { useState } from 'react'
 
 interface Product {
+    _id: string;
     name: string;
-    id: number;
-    imagePath: StaticImageData;
+    category: string;
     price: number;
-    description: string
+    originalPrice: number;
+    tags: string;
+    image: string,
+    description: string,
+    available: boolean
 }
 
 interface CartItem {
+    _id: string;
     name: string;
-    id: number;
-    imagePath: StaticImageData;
+    category: string;
     price: number;
-    description: string
+    originalPrice: number;
+    tags: string;
+    image: string,
+    description: string,
+    available: boolean,
     quantity: number
 }
 
+const getData = async (): Promise<Product[]> => {
+    const res = await client.fetch(`
+      *[_type == "food"]{
+        _id,
+        name,
+        category,
+        price,
+        originalPrice,
+        tags,
+        "image": image.asset-> url,
+        description,
+        available,
+        quantity,
+      }
+    `);
+    return res;
+  };
+
 const Page = () => {
+    const [products, setProducts] = useState<Product[]>([]);
     const dispatch = useDispatch<AppDispatch>();
     const cartArray: CartItem[] = useAppSelector((state) => state.cartReducer)
 
-    const products: Product[] = [
-        {
-            name: "Fresh Lime",
-            id: 1,
-            imagePath: Shopimage1,
-            price: 38.00,
-            description: "This is a description"
-        },
-        {
-            name: "Chocolate Muffin",
-            id: 2,
-            imagePath: Shopimage2,
-            price: 28.00,
-            description: "This is a description"
-        },
-        {
-            name: "Burger",
-            id: 3,
-            imagePath: Shopimage3,
-            price: 21.00,
-            description: "This is a description"
-        },
-        {
-            name: "Country Burger",
-            id: 4,
-            imagePath: Shopimage4,
-            price: 45.00,
-            description: "This is a description"
-        },
-        {
-            name: "Drink",
-            id: 5,
-            imagePath: Shopimage5,
-            price: 23.00,
-            description: "This is a description"
-        },
-        {
-            name: "Pizza",
-            id: 6,
-            imagePath: Shopimage6,
-            price: 43.00,
-            description: "This is a description"
-        },
-        {
-            name: "Cheese Butter",
-            id: 7,
-            imagePath: Shopimage7,
-            price: 10.00,
-            description: "This is a description"
-        },
-        {
-            name: "Sandwiches",
-            id: 8,
-            imagePath: Shopimage8,
-            price: 25.00,
-            description: "This is a description"
-        },
-        {
-            name: "Chicken Chup",
-            id: 9,
-            imagePath: Shopimage9,
-            price: 12.00,
-            description: "This is a description"
-        },
-    ]
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+          try {
+            const data = await getData();
+            console.log("Fetched Products:", data);
+            setProducts(data);
+          } catch (error) {
+            console.error("Error fetching products:", error); 
+          }
+        };
+        fetchProducts();
+      }, []);
 
     const addToCart = (product: Product) => {
-        const itemIndex = cartArray.findIndex((item) => item.id === product.id)
+        const itemIndex = cartArray.findIndex((item) => item._id === product._id)
 
         if (itemIndex !== -1) {
             const updatedCart = cartArray.map((item, index) =>
@@ -117,11 +84,15 @@ const Page = () => {
 
         else {
             const newCartItem = {
+                _id: product._id,
                 name: product.name,
-                id: product.id,
-                imagePath: product.imagePath,
+                category: product.category,
                 price: product.price,
+                originalPrice: product.originalPrice,
+                tags: product.tags,
+                image: product.image,
                 description: product.description,
+                available: product.available,
                 quantity: 1
             };
 
@@ -136,8 +107,8 @@ const Page = () => {
 
 
     return (
-        <div className='bg-white'>
-            <div className="bg-hero-image bg-cover bg-center h-80 w-full flex justify-center items-center mt-[30px] ">
+        <div className='bg-white pb-12'>
+            <div className="bg-hero-image bg-cover bg-center h-80 w-full flex justify-center items-center mt-[30px]">
                 <div className=''>
                     <h1 className='text-white font-sans text-5xl font-bold '>Our Shop</h1>
                     <div className='flex justify-center items-center'>
@@ -149,20 +120,23 @@ const Page = () => {
             </div>
 
             <div className='flex justify-center gap-10 mt-20 lg:mx-8 xl:mx-[150px] flex-wrap'>
-                {
+                {products.length > 0 ? (
                     
-                    products.map((product) => (
-                        <div key={product.id}>
-                            <Image src={product.imagePath} alt="image" />
+                    products.map((product: Product) => (
+                        <div key={product._id}>
+                            <Image src={product.image} alt="image" width={300} height={300} />
                             <div>
                                 <h2 className='font-bold'>{product.name}</h2>
-                                <p className='text-primary'>${product.price}</p>
+                                <p className='text-primary'>Price: {product.price}</p>
                             </div>
                             <div>
                                 <button onClick={() => addToCart(product)} className='w-36 h-10 bg-primary text-white hover:bg-amber-400'> Add to Cart </button>
                             </div>
                         </div>
                     ))
+                ) : (
+                    <p> Loading Products...</p>
+                )
                 }
             </div>
 

@@ -7,9 +7,14 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Menu from '../../public/menu.png'
 import Close from '../../public/close.png'
+import { useRouter } from 'next/navigation'
+import {useAppSelector } from '@/redux/features/store'
+
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const cartArray = useAppSelector((state) => state.cartReducer)
+    const Router = useRouter()
     return (
         <div>
             <nav>
@@ -20,10 +25,10 @@ export default function Navbar() {
                             <li><Link href="/" className='hover:text-primary'>Home</Link></li>
                             <li><Link href="/Menu" className='hover:text-primary'>Menu</Link></li>
                             <li><Link href="/Blog" className='hover:text-primary'>Blog</Link></li>
-                            <li><Link href="Page" className='hover:text-primary'>Pages</Link></li>
-                            <li><Link href="About" className='hover:text-primary'>About</Link></li>
+                            <li><Link href="/Chefs" className='hover:text-primary'>Chefs</Link></li>
+                            <li><Link href="/About" className='hover:text-primary'>About</Link></li>
                             <li><Link href="/OurShop" className='hover:text-primary'>Shop</Link></li>
-                            <li><Link href="Contact" className='hover:text-primary'>Contact</Link></li>
+                            <li><Link href="/Contact" className='hover:text-primary'>Contact</Link></li>
                         </ul>
                     </div>
 
@@ -35,7 +40,14 @@ export default function Navbar() {
                                 className="bg-[#0D0D0D] text-white" />
                             <Image src={Group} alt="icon" className='w-[24px] h-[24px]' />
                         </div>
-                        <Image src={Handbag} alt="icon1" className='w-[24px] h-[24px] ml-4' />
+                        <div className='relative'>
+                            <Image src={Handbag} alt="icon2" className='w-[24px] h-[24px] ml-4 cursor-pointer' onClick={() => Router.push('/ShoppingCart')} />
+                            {cartArray.length > 0 && (
+                                <span className="absolute top-[-5px] right-[-5px] bg-primary text-white text-sm w-5 h-5 flex justify-center items-center rounded-full">
+                                    {cartArray.length}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     <Image src={Menu} alt="icon" className='bg-transparent text-white filter invert w-8 cursor-pointer md:hidden' onClick={() => setIsMenuOpen(true)} />
@@ -49,7 +61,7 @@ export default function Navbar() {
                             <li><Link href="/" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>Home</Link></li>
                             <li><Link href="/Menu" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>Menu</Link></li>
                             <li><Link href="/Blog" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>Blog</Link></li>
-                            <li><Link href="/Page" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>Pages</Link></li>
+                            <li><Link href="/Chefs" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>Pages</Link></li>
                             <li><Link href="/About" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>About</Link></li>
                             <li><Link href="/OurShop" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>Shop</Link></li>
                             <li><Link href="/Contact" className='hover:text-primary list-none w-full text-center p-4 cursor-pointer' onClick={() => setIsMenuOpen(false)}>Contact</Link></li>
